@@ -36,6 +36,7 @@ file with the following contents:
 
 ```ruby
 DynamicConfiguration::create(:Options, File.join(Rails.root, "config/options"))
+```
 
 Require config/options/options.rb somewhere in your
 config/application.rb, like this:

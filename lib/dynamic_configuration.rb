@@ -88,7 +88,7 @@ module DynamicConfiguration
       mod_name = file_pathname.basename.to_s[0..-4]
 
       @modules ||= {}
-      @modules[mod_name.intern] ||= Submodule.new
+      @modules[mod_name.intern] ||= Group.new
       @modules[mod_name.intern].instance_eval(::IO.read(file_pathname.to_s))
 
       @settings ||= {}
@@ -97,14 +97,14 @@ module DynamicConfiguration
 
     def method_missing(name, *args, &block)
       unless @settings && @settings[name]
-        raise MissingSubmoduleException.new("No configuration defined for a '#{name}' submodule")
+        raise MissingGroupException.new("No configuration defined for a '#{name}' submodule")
       end
 
       @settings[name]
     end
   end
 
-  class Submodule < ::BlankSlate
+  class Group < ::BlankSlate
     attr_accessor :settings
 
     def initialize
@@ -129,6 +129,6 @@ module DynamicConfiguration
     end
   end
 
-  class MissingSubmoduleException < StandardError; end
+  class MissingGroupException < StandardError; end
   class MissingSettingException < StandardError; end
 end

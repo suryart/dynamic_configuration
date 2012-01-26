@@ -53,7 +53,7 @@ describe DynamicConfiguration do
     lambda {
       DynamicConfiguration::create(:Settings, path)
       Settings.xyz.setting_three
-    }.should raise_error(DynamicConfiguration::MissingSubmoduleException)
+    }.should raise_error(DynamicConfiguration::MissingGroupException)
   end
 
   it "should raise an exception if trying to use a setting that is not defined" do

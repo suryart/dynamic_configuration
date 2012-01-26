@@ -13,7 +13,7 @@ differentiate dynamic_configuration from other configuration plugins:
  * in Rails development environment, one doesn't have to restart the
    server to add/remove/modify a setting
 
- * the settings are divided into groups, with each group living in a
+ * the settings are divided into groups, each group being defined in a
    separate file, making it easier to remember individual setting
    names and maintain the whole configuration
 

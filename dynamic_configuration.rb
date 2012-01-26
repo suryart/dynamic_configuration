@@ -11,7 +11,7 @@ module DynamicConfiguration
     def create_config(const_name, config_file_name)
       setup_config(const_name, config_file_name)
       load_main_configuration_files
-      load_per_environment_configuration_files
+      load_per_environment_configuration_files if Object.const_defined?(:Rails)
       load_local_configuration_files
 
       return @config
@@ -19,10 +19,9 @@ module DynamicConfiguration
 
     private
     
-    def setup_config(const_name, config_file_name)
+    def setup_config(const_name, config_path)
       @const_name  = const_name
-      @config_file = Pathname.new(config_file_name)
-      @config_path = @config_file.dirname
+      @config_path = Pathname.new(config_path)
       @config      = Config.new(@const_name, @config_path)
 
       Object.const_set @const_name, @config
@@ -32,7 +31,7 @@ module DynamicConfiguration
       @config_path.entries.each do |mod_file|
         next if ["..", "."].include?(mod_file.basename.to_s)
         mod_file = @config_path + mod_file
-        next unless mod_file.file? && mod_file != @config_file
+        next unless mod_file.file?
         @config.load_module(mod_file)
       end
     end
@@ -52,7 +51,10 @@ module DynamicConfiguration
     end
 
     def load_local_configuration_files
-      return unless FileTest.directory?(@config_path.to_s + "/local") && Rails.env != 'test'
+      local_settings_exist = FileTest.directory?(@config_path.to_s + "/local")
+      rails_test_env = Object.const_defined?(:Rails) && Rails.env == 'test'
+      return if !local_settings_exist || rails_test_env
+
       local_mod_files_dir = @config_path + Pathname.new("local/")
       local_mod_files_dir.entries.each do |mod_file|
         next if ["..", "."].include?(mod_file.basename.to_s)

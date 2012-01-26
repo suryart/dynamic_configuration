@@ -5,14 +5,18 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dynamic_configuration}
-  s.version = "0.1.5"
+  s.version = "0.1.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Jarosław Rzeszótko}]
   s.date = %q{2012-01-26}
   s.description = %q{Flexible configuration library for Ruby and Rails applications.}
   s.email = %q{jrzeszotko@gmail.com}
+  s.extra_rdoc_files = [
+    "README.markdown"
+  ]
   s.files = [
+    "README.markdown",
     "Rakefile",
     "VERSION",
     "dynamic_configuration.gemspec",

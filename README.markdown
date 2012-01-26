@@ -69,7 +69,7 @@ DynamicConfiguration::create(:Options, "options/")
 
 ### Basics
 
-You create a settings group by simply creating a file somewhere in the
+You create a settings group by creating a file somewhere in the
 options directory, to see how it works, create options/main.rb and
 define a single setting in it:
 
@@ -88,7 +88,7 @@ Options.main.a_string
 
 The name of the group of options is set to be the same as the base
 name of the file, so if you create emails.rb, the settings will be
-Options.emails.whatever_you_define etc.
+accessible as Options.emails.whatever_you_define etc.
 
 The value of each settings can be any kind of Ruby object, so the
 following is a valid config file:
@@ -123,7 +123,7 @@ has to have the syntax of one.
 ### Overriding settings per Rails environment ###
 
 To overwrite the settings for a given Rails environment, just create a
-subdirectory of the options directory, named after the name of
+subdirectory of the options directory named after the name of the
 environment, for example config/options/test/. Then create a file
 corresponding to the group of settings of which one or more you want
 to override. For example, if config/options/main.rb looks like above,

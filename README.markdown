@@ -10,7 +10,8 @@ differentiate dynamic_configuration from other configuration plugins:
 
  * configuration files are very clean-looking Ruby files
 
- * the configuration is automatically reloaded in Rails development environment
+ * in Rails development environment, one doesn't have to restart the
+   server to change/add a setting
 
  * the settings are divided into groups, with each group living in a
    separate file, making it easier to remember individual setting

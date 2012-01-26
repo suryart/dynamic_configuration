@@ -17,8 +17,9 @@ differentiate dynamic_configuration from other configuration plugins:
    separate file, making it easier to remember individual setting
    names and maintain the whole configuration
 
- * settings can be overridden locally for a given installation and
-   per-Rails-environment
+ * settings can be overridden per-Rails-environment and locally for a
+   given installation (useful for customzing the configuration
+   per-server, while keeping the core settings in Git)
 
  * throughout field- and unit- tested
 

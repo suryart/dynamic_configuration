@@ -72,7 +72,7 @@ module DynamicConfiguration
     def finalize_config
       @config.freeze
 
-      if Object.instance_eval { const_defined?(:Rails) }
+      if @rails_loaded
         ::ActiveSupport::Dependencies.autoload_paths << @config_path.to_s
         ::ActiveSupport::Dependencies.explicitly_unloadable_constants << @const_name.to_s
       end

@@ -15,10 +15,26 @@ describe DynamicConfiguration do
   end
 
   it "should make per-environment settings take precedence over main configuration" do
-    Rails = mock(:env => 'test').as_null_object
-    DynamicConfiguration::create(:Settings, path)
-    Settings.main.setting_three.should == [3, 2, 1]
-    Object.instance_eval { remove_const :Rails }
+    begin
+      Rails = mock(:env => 'test').as_null_object
+
+      module ::ActiveSupport
+        module Dependencies
+          class << self
+            def autoload_paths; []; end
+            def explicitly_unloadable_constants; []; end
+          end
+        end
+      end
+
+      DynamicConfiguration::create(:Settings, path)
+      Settings.main.setting_three.should == [3, 2, 1]
+    ensure
+      Object.instance_eval do
+        remove_const :Rails
+        remove_const :ActiveSupport
+      end
+    end
   end
 
   it "should make local settings take precedence even over per-environment settings" do

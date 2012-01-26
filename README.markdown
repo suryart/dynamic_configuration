@@ -1,4 +1,4 @@
-# Application configuration made easy
+# dynamic_configuration
 
 Rails made great innovations in almost all areas of web application
 development, yet it surprisingly does not provide any means for

@@ -9,15 +9,12 @@ module DynamicConfiguration
 
   class ConfigFactory   
     def create_config(const_name, config_file_name)
-      @rails_loaded = Object.const_defined?(:Rails)
-      
-      config = setup_config(const_name, config_file_name)
+      setup_config(const_name, config_file_name)
       load_main_configuration_files
       load_per_environment_configuration_files if @rails_loaded
       load_local_configuration_files
-      config.freeze
-
-      return @config
+      finalize_config
+      @config
     end
 
     private
@@ -34,7 +31,7 @@ module DynamicConfiguration
       @config_path.entries.each do |mod_file|
         next if ["..", "."].include?(mod_file.basename.to_s)
         mod_file = @config_path + mod_file
-        next unless mod_file.file?
+        next unless mod_file.file? && mod_file.basename.to_s != "#{@const_name.to_s.downcase}.rb"
         @config.load_module(mod_file)
       end
     end
@@ -64,6 +61,15 @@ module DynamicConfiguration
         mod_file = local_mod_files_dir + mod_file
         next unless mod_file.file?
         @config.load_module(mod_file)
+      end
+    end
+
+    def finalize_config
+      @config.freeze
+
+      if Object.instance_eval { const_defined?(:Rails) }
+        ::ActiveSupport::Dependencies.autoload_paths << @config_path.to_s
+        ::ActiveSupport::Dependencies.explicitly_unloadable_constants << @const_name.to_s
       end
     end
   end

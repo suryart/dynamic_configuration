@@ -21,6 +21,8 @@ differentiate dynamic_configuration from other configuration plugins:
 
  * throughout field- and unit- tested
 
+Developed as part of my work for http://www.tutoria.de/.
+
 ## Setup
 
 ### Rails 3 application:
@@ -71,7 +73,6 @@ define a single setting in it:
 
 ```ruby
 # config/options/main.rb
-
 a_string "sample value"
 ```
 
@@ -92,7 +93,6 @@ following is a valid config file:
 
 ```ruby
 # config/options/main.rb
-
 a_string "Some string"
 
 an_array [1, 2, 3]
@@ -130,7 +130,7 @@ and you create config/options/test/main.rb looking like this:
 ```ruby
 # config/options/test/main.rb
 a_string "Test"
-'''
+```
 
 Then Options.main.a_string will evaluate to "Test" in the test
 environment, while all the other Options.main settings will evaluate
@@ -145,7 +145,7 @@ want to override, for example config/options/local/main.rb:
 ```ruby
 # config/options/local/main.rb
 an_array [4, 5, 6]
-'''
+```
 
 Then, Options.main.an_array will evaluate to [4, 5, 6] regardless of
 Rails environment and other Options.main settings will be evaluated

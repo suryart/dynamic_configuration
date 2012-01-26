@@ -174,4 +174,4 @@ accidentally modify them. If you try to access a settings group that
 wasn't defined, you will get an
 DynamicConfiguration::MissingGroupException, if you try to access a
 setting that isn't defined of a group that _is_ defined, you will get
-a DynamicConfiguration::MissingGroupException.
+a DynamicConfiguration::MissingSettingException.

@@ -19,6 +19,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "jrzeszotko@gmail.com"
   gem.homepage = "http://github.com/jaroslawr/dynamic_configuration"
   gem.authors = ["Jarosław Rzeszótko"]
+  gem.add_dependency('builder')
 end
 
 Jeweler::RubygemsDotOrgTasks.new

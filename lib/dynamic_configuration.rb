@@ -9,6 +9,7 @@ module DynamicConfiguration
 
   class ConfigFactory   
     def create_config(const_name, config_file_name)
+      detect_rails
       setup_config(const_name, config_file_name)
       load_main_configuration_files
       load_per_environment_configuration_files if @rails_loaded
@@ -18,6 +19,10 @@ module DynamicConfiguration
     end
 
     private
+
+    def detect_rails
+      @rails_loaded = Object.const_defined?(:Rails)
+    end
     
     def setup_config(const_name, config_path)
       @const_name  = const_name

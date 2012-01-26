@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require_relative '../dynamic_configuration'
+require_relative '../lib/dynamic_configuration'
 
 describe DynamicConfiguration do
   let(:path) { "#{File.dirname(__FILE__)}/options" }

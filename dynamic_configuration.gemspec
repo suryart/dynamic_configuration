@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.files = [
     "Rakefile",
     "VERSION",
+    "dynamic_configuration.gemspec",
     "lib/dynamic_configuration.rb",
     "spec/dynamic_configuration_spec.rb",
     "spec/options/local/main.rb",

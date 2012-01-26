@@ -1,4 +1,4 @@
-# dynamic_configuration: Application configuration made easy
+# Application configuration made easy
 
 Rails made great innovations in almost all areas of web application
 development, yet it surprisingly does not provide any means for
@@ -27,23 +27,28 @@ differentiate dynamic_configuration from other configuration plugins:
 
 Add the gem to your Gemfile:
 
-    gem 'dynamic_configuration'
+```ruby
+gem 'dynamic_configuration'
+```
 
-Create a config/options directory, in it a config/options.rb file with
-the following contents:
+Create a config/options directory, then a config/options/options.rb
+file with the following contents:
 
-    DynamicConfiguration::create(:Options, File.join(Rails.root, "config/options"))
+```ruby
+DynamicConfiguration::create(:Options, File.join(Rails.root, "config/options"))
 
 Require config/options/options.rb somewhere in your
 config/application.rb, like this:
 
-    module SomeApplication
-      class Application < Rails::Application
-        require "config/options/options"
+```ruby
+module SomeApplication
+  class Application < Rails::Application
+    require "config/options/options"
         
-        # ..., rest of the config
-      end
-    end
+    # ..., rest of the config
+  end
+end
+```
 
 ### Ruby application:
 
@@ -51,7 +56,8 @@ Create a directory where you want to store the options, e. g.
 options/, and put the following before your application initialization
 code:
 
-    DynamicConfiguration::create(:Options, "/path/to/options")
-
+```ruby
+DynamicConfiguration::create(:Options, "/path/to/options")
+```
 
 ## Usage

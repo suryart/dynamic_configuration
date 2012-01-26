@@ -18,7 +18,7 @@ differentiate dynamic_configuration from other configuration plugins:
    names and maintain the whole configuration
 
  * settings can be overridden per-Rails-environment and locally for a
-   given installation (useful for customzing the configuration
+   given installation (useful for customizing the configuration
    per-server, while keeping the core settings in Git)
 
  * throughout field- and unit- tested
@@ -138,11 +138,17 @@ Then Options.main.a_string will evaluate to "Test" in the test
 environment, while all the other Options.main settings will evaluate
 to their values defined in config/options/main.rb.
 
-### Overriding settings of locally ###
+### Overriding settings locally ###
 
-Create a local/ subdirectory of the options directory, then create a
-file corresponding to the group of settings of which one or more you
-want to override, for example config/options/local/main.rb:
+This is mostly meant for applications that are stored in a version
+control system and on which multiple persons work. One can keep the
+core settings in config/options, and also create a
+config/options/local directory, that can be svn ignore'd or added to
+.gitignore. If then someone wants to override some setting just on a
+particular server or just on his local development environment, he/she
+can create a file corresponding to the group of settings of which one
+or more he/she wants to override, for example
+config/options/local/main.rb:
 
 ```ruby
 # config/options/local/main.rb

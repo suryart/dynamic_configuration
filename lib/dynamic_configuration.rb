@@ -7,12 +7,15 @@ module DynamicConfiguration
   
   private
 
-  class ConfigFactory
+  class ConfigFactory   
     def create_config(const_name, config_file_name)
-      setup_config(const_name, config_file_name)
+      @rails_loaded = Object.const_defined?(:Rails)
+      
+      config = setup_config(const_name, config_file_name)
       load_main_configuration_files
-      load_per_environment_configuration_files if Object.const_defined?(:Rails)
+      load_per_environment_configuration_files if @rails_loaded
       load_local_configuration_files
+      config.freeze
 
       return @config
     end
@@ -52,7 +55,7 @@ module DynamicConfiguration
 
     def load_local_configuration_files
       local_settings_exist = FileTest.directory?(@config_path.to_s + "/local")
-      rails_test_env = Object.const_defined?(:Rails) && Rails.env == 'test'
+      rails_test_env = @rails_loaded && Rails.env == 'test'
       return if !local_settings_exist || rails_test_env
 
       local_mod_files_dir = @config_path + Pathname.new("local/")
@@ -65,7 +68,7 @@ module DynamicConfiguration
     end
   end
 
-  class Config < ::BlankSlate
+  class Config < ::BlankSlate    
     def initialize(const_name, config_path)
       @const_name, @config_path = const_name, config_path
     end
@@ -78,14 +81,7 @@ module DynamicConfiguration
       @modules[mod_name.intern].instance_eval(::IO.read(file_pathname.to_s))
 
       @settings ||= {}
-      @settings[mod_name.intern] ||= Settings.new(@modules[mod_name.intern].settings)
-    end
-
-    def finalize
-      ::ActiveSupport::Dependencies.autoload_paths << @config_path.to_s
-      ::ActiveSupport::Dependencies.explicitly_unloadable_constants << @const_name.to_s
-      
-      self.freeze
+      @settings[mod_name.intern] ||= Settings.new(@const_name, mod_name, @modules[mod_name.intern].settings)
     end
 
     def method_missing(name, *args, &block)
@@ -106,18 +102,22 @@ module DynamicConfiguration
 
     def method_missing(name, value)
       @settings[name] = value
+      @settings[name].freeze
     end
   end
 
   class Settings < ::BlankSlate
-    def initialize(settings)
+    def initialize(const_name, module_name, settings)
+      @const_name = const_name
+      @module_name = module_name
       @settings = settings
     end
 
     def method_missing(name, *args)
-      @settings[name]
+      @settings.fetch(name) { raise MissingSettingException.new("Setting '#{@const_name}.#{@module_name}.#{name}' is not defined") }
     end
   end
 
   class MissingSubmoduleException < StandardError; end
+  class MissingSettingException < StandardError; end
 end
